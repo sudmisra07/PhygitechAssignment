@@ -10,6 +10,7 @@ public class StepManager : MonoBehaviour
     [SerializeField] private GameObject stepObjectParent;
     [SerializeField] private GameObject initialCanvas;
     [SerializeField] private GameObject vrCanvas;
+    [SerializeField] private AudioSource audioSource;
 
     int currentStep = 0;
 
@@ -57,12 +58,15 @@ public class StepManager : MonoBehaviour
 
     private void StartStep()
     {
+        audioSource.Stop();
         OnShowStep?.Invoke(currentStep);
         Previous.interactable = currentStep != 0;
         Next.gameObject.SetActive(currentStep != steps.Length - 1);
         Exit.gameObject.SetActive(currentStep == steps.Length - 1);
         titleText.text = stepInfos[currentStep].title;
         infoText.text = stepInfos[currentStep].info;
+        audioSource.clip = stepInfos[currentStep].VO;
+        audioSource.Play();
     }
 
     private void CloseVRModule()
@@ -70,6 +74,7 @@ public class StepManager : MonoBehaviour
         stepObjectParent.SetActive(false);
         initialCanvas.SetActive(true);
         vrCanvas.SetActive(false);
+        audioSource.Stop();
     }
 
 }
@@ -79,4 +84,5 @@ public struct StepInformation
 {
     public string title;
     [Multiline] public string info;
+    public AudioClip VO;
 }
