@@ -2,7 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.XR;
 public class StepManager : MonoBehaviour
 {
     [SerializeField] private Steps[] steps;
@@ -23,6 +23,10 @@ public class StepManager : MonoBehaviour
 
     public static event Action<int> OnShowStep;
 
+    private void Awake()
+    {
+        XRSettings.eyeTextureResolutionScale = 2f;
+    }
     private void OnEnable()
     {
         Previous.onClick.AddListener(PreviousStep);
